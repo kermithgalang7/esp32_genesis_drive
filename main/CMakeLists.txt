@@ -1,0 +1,15 @@
+idf_component_register(SRCS 
+    "main.c"
+    "wifi.c"
+    "common.c"
+    "log_wrapper.c"
+    "gpio_helper.c"
+    "rest_api_helper.c"
+    "uart.c"
+    "non_volatile_mem.c"
+    "dev_sim800.c"
+    "lcd_display.c"
+    "shift_register.c"
+    "app_genesis_drive.c"
+    "app_genesis_drive_wrapper.c"
+    INCLUDE_DIRS "")
