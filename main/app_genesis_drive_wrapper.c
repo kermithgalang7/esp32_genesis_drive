@@ -34,14 +34,61 @@ static const char* TAG = "GenesisDriveWrapper";
 
 void genesis_drive_init_peripherals()
 {
-    return -1;
+    ILP_LOGI(TAG, "Genesis Drive Init!!!\n");
+
+    // return -1;
 }
 
 int genesis_drive_h_gen_enable()
 {
+    ilp_set_bit_value(8, 0);
+    ilp_set_bit_value(9, 0);
     return -1;
 }
 int genesis_drive_h_gen_disable()
 {
+    ilp_set_bit_value(8, 1);
+    ilp_set_bit_value(9, 1);
+    return -1;
+}
+
+int genesis_drive_ice1_enable()
+{
+    ilp_set_bit_value(12, 0);
+    return -1;
+}
+int genesis_drive_ice1_disable()
+{
+    ilp_set_bit_value(12, 1);
+    return -1;
+}
+int genesis_drive_ice2_enable()
+{
+    ilp_set_bit_value(13, 0);
+    return -1;
+}
+int genesis_drive_ice2_disable()
+{
+    ilp_set_bit_value(13, 1);
+    return -1;
+}
+int genesis_drive_ice3_enable()
+{
+    ilp_set_bit_value(14, 0);
+    return -1;
+}
+int genesis_drive_ice3_disable()
+{
+    ilp_set_bit_value(14, 1);
+    return -1;
+}
+int genesis_drive_ice4_enable()
+{
+    ilp_set_bit_value(15, 0);
+    return -1;
+}
+int genesis_drive_ice4_disable()
+{
+    ilp_set_bit_value(15, 1);
     return -1;
 }

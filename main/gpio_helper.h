@@ -13,6 +13,7 @@
 #define ILP_PWM_LS_MAX_CH       8
 
 void ilp_gpio_helper_init(void);
+int ilp_gpio_config_powersave(int gpio);
 int ilp_gpio_config_output(int gpio);
 int ilp_gpio_config_input(int gpio);
 int ilp_gpio_config_interrupt(int gpio);

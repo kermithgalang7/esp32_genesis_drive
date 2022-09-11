@@ -138,7 +138,7 @@ void lcd_init_4d(void)
     ilp_set_bit_value(LCD_SHIFTREGBIT_RS, 0);   //register select
 #endif
 
-    ilp_delay_in_millis(100);     //powerup delay ??? maybe no need
+    ilp_delay_in_millis(500);     //powerup delay ??? maybe no need
 
     // lcd_write_4(LCD_CMD_FRESET >> 4);
     lcd_write_4(LCD_CMD_FRESET >> 4);       //looks like >> is really needed

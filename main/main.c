@@ -33,15 +33,28 @@
 #include "uart.h"
 #include "shift_register.h"
 #include "lcd_display.h"
+#include "esp32_init.h"
+#include "rest_api_handler.h"
 
 // #define APP_SMS
-#define GENESIS_DRIVE
+// #define GENESIS_DRIVE
+//#define APP_BLE_FW
+#define I2C_COLLISION
 
 #ifdef APP_SMS
 #include "app_sms_queue_system.h"
 #endif
+
+#ifdef I2C_COLLISION
+#include "app_i2c_collision.h"
+#endif
+
 #ifdef GENESIS_DRIVE
 #include "app_genesis_drive.h"
+#endif
+
+#ifdef APP_BLE_FW
+#include "app_ble_fw.h"
 #endif
 
 #define WIFI_AP_SSID        "IOTLaunchPad_AP"
@@ -64,6 +77,7 @@ void app_main(void)
     //hardware esp32 platform specific init
     //this includes clock, interrupt, rtc, etc
     ilp_esp32_specific_init();
+    //ilp_esp32_custom_init();
 
     //esp32 peripheral specific init
     //gpio_init();
@@ -74,21 +88,27 @@ void app_main(void)
     ilp_wifi_init();
     ilp_wifi_config_client(WIFI_SSID, WIFI_PW);
     ilp_wifi_connect();
+
+    init_http_server();
 #endif
 
-    ilp_init_shift_register();
+    // ilp_init_shift_register();
 
     //TODO: 
     //init_adc(); //needs in voltage measurement
     //init_adc(); //needs in current measurement
     //init_pwm(); //needs in hydro_converter() toggle
 
-    lcd_init();
+    // lcd_init();
+
+    // ilp_init_shift_register();
 
 /********************* Application *********************/
     //application thread 
     // ilp_create_thread(&app_sms_queue_system, "app_sms_queue");
-    ilp_create_thread(&app_genesis_drive, "app_genesis_drive");
+    // ilp_create_thread(&app_genesis_drive, "app_genesis_drive");
+    //ilp_create_thread(&app_ble_fw, "app_ble_fw");
+    ilp_create_thread(&app_i2c_collision, "app_i2c_collision");
 
     ILP_LOGI(TAG, "Base Firmware standby\n");
     while(1)

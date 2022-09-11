@@ -17,7 +17,7 @@
 #define ILP_WIFI_MAX_RETRY                      5
 
 //same as turnon wifi
-int ilp_wifi_enable(void);  
+int ilp_wifi_enable(void);
 //same as turnoff wifi
 int ilp_wifi_disable(void);
 //this should be called first after enabling

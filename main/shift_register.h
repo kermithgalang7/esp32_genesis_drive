@@ -6,10 +6,10 @@
 
 #define ILP_DEFAULT_SHIFTREG_COUNT  2
 
-#define ILP_SHIFT_REG_CLK           18
-#define ILP_SHIFT_REG_DAT           19
+#define ILP_SHIFT_REG_CLK           21
+#define ILP_SHIFT_REG_DAT           23
 #ifdef ILP_SHIFT_REG_HAS_LATCH
-#define ILP_SHIFT_REG_LATCH         21
+#define ILP_SHIFT_REG_LATCH         22
 #endif
 
 int ilp_init_shift_register(void);

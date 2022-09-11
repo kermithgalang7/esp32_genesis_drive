@@ -116,6 +116,19 @@ void ilp_gpio_helper_init(void)
     }
 }
 
+int ilp_gpio_config_powersave(int gpio)
+{
+    gpio_config_t io_conf;
+
+    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = (1ULL<<gpio);
+    io_conf.pull_down_en = 1;
+    io_conf.pull_up_en = 0;
+    gpio_config(&io_conf);
+
+    return 0;
+}
 int ilp_gpio_config_output(int gpio)
 {
     gpio_config_t io_conf;

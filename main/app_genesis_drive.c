@@ -33,6 +33,7 @@
 #include "rest_api_helper.h"
 #include "non_volatile_mem.h"
 #include "uart.h"
+#include "lcd_display.h"
 
 #include  "app_genesis_drive.h"
 #include "app_genesis_drive_wrapper.h"
@@ -52,10 +53,12 @@ void genesis_drive_h_genertor_thread(void* param)
 
     while(app_running == 1)
     {
-        //h_gen_on();
-        ilp_delay_in_millis(250 * h_gen_high_multiplier);
-        //h_gen_off();
-        ilp_delay_in_millis(250 * h_gen_low_multiplier);
+        genesis_drive_h_gen_enable();
+        // ilp_delay_in_millis(250 * h_gen_high_multiplier);
+        ilp_delay_in_millis(1000 * 60);
+        genesis_drive_h_gen_disable();
+        // ilp_delay_in_millis(250 * h_gen_low_multiplier);
+        ilp_delay_in_millis(1000 * 10);
     }
     ILP_LOGI(TAG, "Must not reach this line!!!\n");
 }
@@ -67,26 +70,28 @@ void genesis_drive_ice_thread(void* param)
     while(app_running == 1)
     {
         //all off
-        //ice1_off();
-        //ice2_off();
-        //ice3_off();
-        //ice4_off();
+        genesis_drive_ice1_disable();
+        genesis_drive_ice2_disable();
+        genesis_drive_ice3_disable();
+        genesis_drive_ice4_disable();
 
+#if 0
         switch(ice_multiplier_index)
         {
             case 0:
-                // ice1_on();
+                genesis_drive_ice1_enable();
                 break;
             case 1:
-                // ice2_on();
+                genesis_drive_ice2_enable();
                 break;
             case 2:
-                // ice3_on();
+                genesis_drive_ice3_enable();
                 break;
             case 3:
-                // ice4_on();
+                genesis_drive_ice4_enable();
                 break;
         }
+#endif 
 
         ilp_delay_in_millis(10 * ice_multiplier[ice_multiplier_index]);
         if(ice_multiplier_index < MAX_ICE_COUNT)
@@ -101,9 +106,16 @@ void app_genesis_drive(void* param)
 {
     //NOTE: most hardware are already initialized in main
     //components_init();
+    genesis_drive_init_peripherals();
 
     ilp_create_thread(&genesis_drive_h_genertor_thread, "genesis_drive_h_genertor_thread");
     ilp_create_thread(&genesis_drive_ice_thread, "genesis_drive_ice_thread");
+
+    lcd_erase_line(1);
+    lcd_erase_line(2);
+    lcd_erase_line(3);
+    lcd_erase_line(4);
+    lcd_write_line(1, "Genesis Drive System");
 
     while(app_running == 1)
     {

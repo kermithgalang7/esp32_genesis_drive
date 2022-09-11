@@ -88,9 +88,15 @@ static void wifi_event_handler(void* arg,
 /*********** below are public functions *******************************/
 
 //same as turnon wifi
-int ilp_wifi_enable(void);  
+int ilp_wifi_enable(void)
+{
+    return 0;
+}
 //same as turnoff wifi
-int ilp_wifi_disable(void);
+int ilp_wifi_disable(void)
+{
+    return 0;
+}
 
 //this should be called first after enabling
 void ilp_wifi_init(void)
@@ -174,6 +180,7 @@ int ilp_wifi_config_ap(char* ap_ssid, char* ap_pw)
     memcpy(wifi_config.ap.ssid, ap_ssid, strlen(ap_ssid));
     wifi_config.ap.ssid_len = strlen(ap_ssid);
     memcpy(wifi_config.ap.password, ap_pw, strlen(ap_pw));
+    //wifi_config.ap.max_connection = 1;
     wifi_config.ap.authmode  = WIFI_AUTH_WPA_WPA2_PSK;
 #endif
     if(strlen(ap_pw) == 0)
