@@ -63,14 +63,16 @@
 // Functions
 esp_err_t oled_ssd1306_init();
 void oled_ssd1306_test(void *ignore);
-void oled_ssd1306_clear(void *ignore);
-void oled_ssd1306_print(void *ignore);
-void oled_ssd1306_screensaver(void *ignore);
+esp_err_t oled_ssd1306_clear(void *ignore);
+esp_err_t oled_ssd1306_print(void *ignore);
+esp_err_t oled_ssd1306_screensaver(void *ignore);
 
 //helper functions
-void oled_display_ssd1306_init();
+esp_err_t oled_display_ssd1306_init();
 int oled_set_i2c_address(unsigned char addr);
+int oled_write_text(char* data);
 
+#define MAX_TEXT_BUFFER     200
 
 
 #endif //__OLED_DISPLAY_SSD1306_H__
