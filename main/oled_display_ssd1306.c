@@ -79,9 +79,12 @@ esp_err_t oled_ssd1306_init() {
 
     // Set Segment re-map
     i2c_master_write_byte(cmd, SEGMENT_REMAP, ACK_CHECK_EN);
+    // or 1 will mirror the image in combination with COM_OUTPUT_SCAN_DIR_DEC
+    i2c_master_write_byte(cmd, SEGMENT_REMAP | 0x1, ACK_CHECK_EN);
 
     // Set COM output scan dir
-    i2c_master_write_byte(cmd, COM_OUTPUT_SCAN_DIR, ACK_CHECK_EN);
+    // i2c_master_write_byte(cmd, COM_OUTPUT_SCAN_DIR_INC, ACK_CHECK_EN);
+    i2c_master_write_byte(cmd, COM_OUTPUT_SCAN_DIR_DEC, ACK_CHECK_EN);
     i2c_master_write_byte(cmd, 0x00, ACK_CHECK_EN);
 
     // Set COM pins hardware config
@@ -97,6 +100,8 @@ esp_err_t oled_ssd1306_init() {
 
     // Set normal display
     i2c_master_write_byte(cmd, NORMAL_DISPLAY, ACK_CHECK_EN);
+    // Set inverse display
+    // i2c_master_write_byte(cmd, DISPLAY_INVERSE, ACK_CHECK_EN);
 
     // Set OSC frequency
     i2c_master_write_byte(cmd, DISPLAY_CLK_RATIO, ACK_CHECK_EN);

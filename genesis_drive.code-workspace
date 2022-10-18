@@ -3,5 +3,10 @@
 		{
 			"path": "main"
 		}
-	]
+    ],
+    "settings": {
+        "files.associations": {
+            "app_emmy_test_fw.h": "c"
+        }
+    }
 }

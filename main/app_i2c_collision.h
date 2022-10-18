@@ -9,6 +9,7 @@
 #define ESP32_WROOM_BLUE_LED_GPIO       2
 
 #define MAX_OLED_SCREEN_BUFFER          100
+#define MAX_COOLDOWN_MULTIPLIER         1000
 
 void app_i2c_collision(void* param);
 

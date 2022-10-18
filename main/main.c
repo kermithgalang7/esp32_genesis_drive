@@ -38,8 +38,9 @@
 
 // #define APP_SMS
 // #define GENESIS_DRIVE
-//#define APP_BLE_FW
-#define I2C_COLLISION
+// #define APP_BLE_FW
+// #define I2C_COLLISION
+#define EMMY_TEST_FW
 
 #ifdef APP_SMS
 #include "app_sms_queue_system.h"
@@ -55,6 +56,10 @@
 
 #ifdef APP_BLE_FW
 #include "app_ble_fw.h"
+#endif
+
+#ifdef EMMY_TEST_FW
+#include "app_emmy_test_fw.h"
 #endif
 
 #define WIFI_AP_SSID        "IOTLaunchPad_AP"
@@ -105,10 +110,21 @@ void app_main(void)
 
 /********************* Application *********************/
     //application thread 
-    // ilp_create_thread(&app_sms_queue_system, "app_sms_queue");
-    // ilp_create_thread(&app_genesis_drive, "app_genesis_drive");
-    //ilp_create_thread(&app_ble_fw, "app_ble_fw");
+#ifdef APP_SMS
+    ilp_create_thread(&app_sms_queue_system, "app_sms_queue");
+#endif
+#ifdef GENESIS_DRIVE
+    ilp_create_thread(&app_genesis_drive, "app_genesis_drive");
+#endif
+#ifdef APP_BLE_FW
+    ilp_create_thread(&app_ble_fw, "app_ble_fw");
+#endif
+#ifdef I2C_COLLISION
     ilp_create_thread(&app_i2c_collision, "app_i2c_collision");
+#endif
+#ifdef EMMY_TEST_FW
+    ilp_create_thread(&app_emmy_main, "app_emmy_main");
+#endif
 
     ILP_LOGI(TAG, "Base Firmware standby\n");
     while(1)

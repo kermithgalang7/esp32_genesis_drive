@@ -18,5 +18,6 @@ idf_component_register(SRCS
     "app_genesis_drive_wrapper.c"
     "app_ble_fw.c"
     "app_i2c_collision.c"
+    "app_emmy_test_fw.c"
     "esp32_init.c"
     INCLUDE_DIRS "")
