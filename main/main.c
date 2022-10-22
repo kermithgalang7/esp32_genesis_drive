@@ -91,7 +91,8 @@ void app_main(void)
 #if 0       //not sure if we need wifi now!!!
     ilp_wifi_enable();
     ilp_wifi_init();
-    ilp_wifi_config_client(WIFI_SSID, WIFI_PW);
+    // ilp_wifi_config_client(WIFI_SSID, WIFI_PW);
+    ilp_wifi_config_client("GalangWifi", "11223344");
     ilp_wifi_connect();
 
     init_http_server();

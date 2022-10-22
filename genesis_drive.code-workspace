@@ -1,12 +1,17 @@
 {
 	"folders": [
-		{
-			"path": "main"
-		}
+        {
+            "path": "main"
+        },
+        {
+            "path": "../../esp-idf-2/components"
+        }
     ],
     "settings": {
         "files.associations": {
-            "app_emmy_test_fw.h": "c"
+            "app_emmy_test_fw.h": "c",
+            "*.ipp": "c",
+            "*.inc": "c"
         }
     }
 }

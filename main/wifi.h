@@ -31,6 +31,9 @@ int ilp_get_wifi_status(void);
 int ilp_wifi_connect(void);
 int ilp_wifi_disconnect(void);
 
+int ilp_get_ipchar(char* ipstr);
+int ilp_get_netmaskchar(char* netmaskstr);
+
 
 
 

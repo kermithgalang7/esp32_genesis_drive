@@ -15,6 +15,8 @@
 #include "esp_log.h"
 #include "nvs_flash.h"
 
+#include "esp_netif.h"
+
 #include "lwip/err.h"
 #include "lwip/sys.h"
 
@@ -65,7 +67,8 @@ static void wifi_event_handler(void* arg,
             else
             {
                 xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
-            }            
+                ILP_LOGI(TAG, "Wifi STA Disconnected\n");
+            }
         break;
         case IP_EVENT_STA_GOT_IP:
             event = (ip_event_got_ip_t*) event_data;
@@ -82,7 +85,6 @@ static void wifi_event_handler(void* arg,
         default:
             ILP_LOGI(TAG, "Wifi unknown\n");
     }
-
 }
 
 /*********** below are public functions *******************************/
@@ -213,3 +215,24 @@ int ilp_wifi_disconnect(void)
 
     return 0;
 }
+
+int ilp_get_ipchar(char* ipstr)
+{
+    tcpip_adapter_ip_info_t ipinfo;
+
+    tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ipinfo);
+    ipstr[0] = ipinfo.ip.addr & 0xFF;
+    ipstr[1] = (ipinfo.ip.addr >> 8) & 0xFF;
+    ipstr[2] = (ipinfo.ip.addr >> 16) & 0xFF;
+    ipstr[3] = (ipinfo.ip.addr >> 24) & 0xFF;
+    // sprintf(test, "ipinfo %x", ipinfo.ip.addr);
+    // sprintf(test, "ipinfo %d.%d.%d.%d", 
+    //     ipstr[0],
+    //     ipstr[1],
+    //     ipstr[2],
+    //     ipstr[3]
+    // );
+
+    return 0;
+}
+int ilp_get_netmaskstr(char* netmaskstr);
