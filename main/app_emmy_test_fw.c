@@ -54,6 +54,10 @@ char lcd_line4[LCD_MAX_CHAR];
 //control below this point
 #define TEST_MODE
 
+int g_callback_temp1 = -1;
+int g_callback_temp2 = -1;
+
+int g_wifi_cmd_activity_cooldown = 0;
 
 void emmy_relay_control_service(void* param)
 {
@@ -209,9 +213,90 @@ void relay7_off(void){ relaycontrol &= ~(1 << 6); }
 void relay8_on(void){ relaycontrol |= (1 << 7); }
 void relay8_off(void){ relaycontrol &= ~(1 << 7); }
 
-void emmy_callback_http_get_request(int data)
+void emmy_callback_http_get_request(char* querystr)
 {
-    ILP_LOGI(TAG, "Callback executed with %d\n", data);
+    char* label = NULL;
+    char* value = NULL;
+
+    ILP_LOGI(TAG, "Full Query %s\n", querystr);
+
+#if 0
+        if(strcmp(token, "cmd") == 0)
+        {
+            token = strtok(NULL, delim);
+            cmd_value = atoi(token);
+            ILP_LOGI(TAG, "CMD: [%s] %d\n", token, cmd_value);
+            
+            //check first if callback is registered
+            if(get_req_callback != NULL)
+            {
+                get_req_callback(cmd_value, 1);
+            }
+
+            break;
+        }
+#endif
+
+    if((label == NULL) && (value == NULL))
+    {
+        ILP_LOGI(TAG, "Ending session !!!\n");
+        g_callback_temp1 = -1;
+        g_callback_temp2 = -1;
+        return;
+    }
+
+    ILP_LOGI(TAG, "Callback executed with %s and %s\n", label, value);
+    //will be using temp1 as relay and temp2 as value
+    if(strcmp(label, "relay") == 0)
+    {
+        //storing relay number we want to modify the state
+        g_callback_temp1 = atoi(value);
+    }
+    if(strcmp(label, "value") == 0)
+    {
+        //storing relay number we want to modify the state
+        g_callback_temp2 = atoi(value);
+    }
+    if((g_callback_temp1 != -1) && (g_callback_temp2 != -1))
+    {
+        switch(g_callback_temp1)
+        {
+            case 1:
+                if(g_callback_temp2 == 1) relay1_on();
+                else relay1_off();
+            break;
+            case 2:
+                if(g_callback_temp2 == 1) relay2_on();
+                else relay2_off();
+            break;
+            case 3:
+                if(g_callback_temp2 == 1) relay3_on();
+                else relay3_off();
+            break;
+            case 4:
+                if(g_callback_temp2 == 1) relay4_on();
+                else relay4_off();
+            break;
+            case 5:
+                if(g_callback_temp2 == 1) relay5_on();
+                else relay5_off();
+            break;
+            case 6:
+                if(g_callback_temp2 == 1) relay6_on();
+                else relay6_off();
+            break;
+            case 7:
+                if(g_callback_temp2 == 1) relay7_on();
+                else relay7_off();
+            break;
+            case 8:
+                if(g_callback_temp2 == 1) relay8_on();
+                else relay8_off();
+            break;
+            default:
+                ILP_LOGI(TAG, "Invalid relay value\n");
+        }
+    }
 }
 
 void app_emmy_main(void* param)
@@ -238,8 +323,10 @@ void app_emmy_main(void* param)
     ilp_wifi_config_client("GalangWiFi", "11223344");
     ilp_wifi_connect();
 
-    register_get_handler(&emmy_callback_http_get_request);
     init_http_server();
+    // "/gettest" - slash is mandatory
+    register_get_handler("/gettest", &emmy_callback_http_get_request);
+    register_get_handler("/setcfg", &emmy_callback_http_get_request);
 #endif
 
     while(app_emmy_running == 1)
@@ -249,8 +336,8 @@ void app_emmy_main(void* param)
         //     g_status = ilp_random(8) - 1;
 
         // relaycontrol = 0xF0;
-        if(ilp_random(200) > 175)
-            relaycontrol = ilp_random(255);
+        // if(ilp_random(200) > 150)
+            // relaycontrol = ilp_random(255);
 
         // emmy_set_ipaddr(192, 168, 1, 8);
         if(ilp_get_wifi_status() == IP_EVENT_STA_GOT_IP)
@@ -262,6 +349,9 @@ void app_emmy_main(void* param)
             );
             emmy_set_status(STAT_WIFI_WAIT);
         }
+
+        if(g_wifi_cmd_activity_cooldown > 0)
+            emmy_set_status(STAT_TEST_RUNNING);
 
         ilp_delay_in_millis(1000);
     }

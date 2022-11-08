@@ -17,7 +17,7 @@
 #define GPIO_LED2                       17
 
 void app_ble_fw(void* param);
-void cmd_from_user_to_esp32(int cmd);
+void cmd_from_user_to_esp32(char* cmd, char* param);
 int status_from_esp32_to_user(int param);
 
 

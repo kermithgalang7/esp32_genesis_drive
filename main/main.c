@@ -40,7 +40,8 @@
 // #define GENESIS_DRIVE
 // #define APP_BLE_FW
 // #define I2C_COLLISION
-#define EMMY_TEST_FW
+// #define EMMY_TEST_FW
+#define PLANT_GROW
 
 #ifdef APP_SMS
 #include "app_sms_queue_system.h"
@@ -60,6 +61,10 @@
 
 #ifdef EMMY_TEST_FW
 #include "app_emmy_test_fw.h"
+#endif
+
+#ifdef PLANT_GROW
+#include "app_plant_grow.h"
 #endif
 
 #define WIFI_AP_SSID        "IOTLaunchPad_AP"
@@ -125,6 +130,9 @@ void app_main(void)
 #endif
 #ifdef EMMY_TEST_FW
     ilp_create_thread(&app_emmy_main, "app_emmy_main");
+#endif
+#ifdef PLANT_GROW
+    ilp_create_thread(&app_plant_grow_main, "app_plant_grow_main");
 #endif
 
     ILP_LOGI(TAG, "Base Firmware standby\n");

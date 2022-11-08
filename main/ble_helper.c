@@ -366,7 +366,9 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
             ESP_LOGI(GATTS_TAG, "GATT_WRITE_EVT, value len %d, value :", param->write.len);            
             esp_log_buffer_hex(GATTS_TAG, param->write.value, param->write.len);
 
-            cmd_from_user_to_esp32((int) param->write.value[0]);
+            //TODO: correct this param issue
+            //cmd_from_user_to_esp32((int) param->write.value[0]);
+            cmd_from_user_to_esp32("TODO", "THIS");
             ESP_LOGI(GATTS_TAG, "Writting value 0x%x\n", param->write.value[0]);
 
             if (gl_profile_tab[PROFILE_A_APP_ID].descr_handle == param->write.handle && param->write.len == 2){

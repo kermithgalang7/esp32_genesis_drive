@@ -95,8 +95,10 @@ void app_ble_led_status(void* param)
     ILP_LOGE(TAG, "MUST Not Reach This line\n");
 }
 
-void cmd_from_user_to_esp32(int cmd)
+void cmd_from_user_to_esp32(char* cmd1, char* param)
 {
+    int cmd = atoi(cmd1);
+
     ILP_LOGI(TAG, "CMD 0x%x\n", cmd);
     switch(cmd)
     {
@@ -166,7 +168,7 @@ void app_ble_fw(void* param)
     app_init_ble();
     ILP_LOGI(TAG, "BLE Firmware running\n");
 
-    register_get_handler(&cmd_from_user_to_esp32);
+    register_get_handler("gettest", &cmd_from_user_to_esp32);
 
     while(app_running == 1)
     {
